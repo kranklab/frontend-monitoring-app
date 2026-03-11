@@ -1,0 +1,8 @@
+services:
+  grafana:
+    extends:
+      file: .config/docker-compose-base.yaml
+      service: grafana
+    environment:
+      - GF_DATASOURCE_BASIC_AUTH_USER
+      - GF_DATASOURCE_BASIC_AUTH_PASSWORD

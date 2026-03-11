@@ -1,0 +1,75 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "Frontend Monitoring",
+  "id": "frontend-monitoring-app",
+  "info": {
+    "keywords": ["app"],
+    "description": "",
+    "author": {
+      "name": "Kranklab"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Overview",
+      "path": "/a/%PLUGIN_ID%/overview",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "name": "Web Vitals",
+      "path": "/a/%PLUGIN_ID%/web-vitals",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Errors",
+      "path": "/a/%PLUGIN_ID%/errors",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Events",
+      "path": "/a/%PLUGIN_ID%/events",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Sessions",
+      "path": "/a/%PLUGIN_ID%/sessions",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Traces",
+      "path": "/a/%PLUGIN_ID%/traces",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Settings",
+      "path": "/a/%PLUGIN_ID%/settings",
+      "addToNav": true,
+      "defaultNav": false
+    }
+  ],
+  "dependencies": {
+    "grafanaDependency": ">=12.3.0",
+    "plugins": []
+  }
+}
