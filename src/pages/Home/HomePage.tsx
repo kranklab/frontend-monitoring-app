@@ -90,6 +90,7 @@ export function HomePage() {
                 error={error}
               >
                 <Input
+                  id="app-url"
                   placeholder="https://myapp.com"
                   value={url}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}
@@ -107,6 +108,7 @@ export function HomePage() {
                 error={error}
               >
                 <Input
+                  id="service-name"
                   placeholder="my-app"
                   value={serviceName}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setServiceName(e.target.value)}
