@@ -6,11 +6,7 @@ import {
   SceneQueryRunner,
   SceneTimeRange,
 } from '@grafana/scenes';
-import {
-  createFaroControls,
-  createTraceVariableSet,
-  TEMPO_DS_REF,
-} from '../../utils/utils.faro';
+import { createFaroControls, createTraceVariableSet, TEMPO_DS_REF } from '../../utils/utils.faro';
 import { FaroApp } from '../../constants';
 
 export function tracesScene(apps: FaroApp[]) {
@@ -48,17 +44,11 @@ export function tracesScene(apps: FaroApp[]) {
       children: [
         new SceneFlexItem({
           minHeight: 400,
-          body: PanelBuilders.table()
-            .setTitle('Recent Traces')
-            .setData(tracesData)
-            .build(),
+          body: PanelBuilders.table().setTitle('Recent Traces').setData(tracesData).build(),
         }),
         new SceneFlexItem({
           minHeight: 300,
-          body: PanelBuilders.table()
-            .setTitle('Error Traces')
-            .setData(errorTracesData)
-            .build(),
+          body: PanelBuilders.table().setTitle('Error Traces').setData(errorTracesData).build(),
         }),
       ],
     }),

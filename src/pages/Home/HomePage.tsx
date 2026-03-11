@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Button, Field, Input, Select, Stack, Text, useStyles2 } from '@grafana/ui';
-import { GrafanaTheme2, SelectableValue } from '@grafana/data';
+import { Button, Combobox, Field, Input, Stack, Text, useStyles2 } from '@grafana/ui';
+import { GrafanaTheme2 } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { css } from '@emotion/css';
 import { usePluginMeta } from '../../utils/utils.plugin';
@@ -52,7 +52,13 @@ export function HomePage() {
         jsonData: {
           apps: [
             ...existingApps,
-            { name: appName, url: url.trim(), serviceName: serviceName.trim(), lokiUid: lokiUid || undefined, tempoUid: tempoUid || undefined },
+            {
+              name: appName,
+              url: url.trim(),
+              serviceName: serviceName.trim(),
+              lokiUid: lokiUid || undefined,
+              tempoUid: tempoUid || undefined,
+            },
           ],
         },
       });
@@ -72,9 +78,7 @@ export function HomePage() {
             <Text element="h1" variant="h2">
               Frontend Monitoring
             </Text>
-            <Text color="secondary">
-              Add your Faro-instrumented app to start seeing real user monitoring data.
-            </Text>
+            <Text color="secondary">Add your Faro-instrumented app to start seeing real user monitoring data.</Text>
           </Stack>
 
           <form onSubmit={handleSubmit}>
@@ -94,7 +98,11 @@ export function HomePage() {
 
               <Field
                 label="Service name"
-                description={<>Must match the <code>app.name</code> you set in Faro</>}
+                description={
+                  <>
+                    Must match the <code>app.name</code> you set in Faro
+                  </>
+                }
                 invalid={Boolean(error && !serviceName)}
                 error={error}
               >
@@ -105,10 +113,7 @@ export function HomePage() {
                 />
               </Field>
 
-              <Field
-                label="Display name"
-                description="Optional — defaults to the hostname if left blank"
-              >
+              <Field label="Display name" description="Optional — defaults to the hostname if left blank">
                 <Input
                   placeholder="My App"
                   value={name}
@@ -120,11 +125,11 @@ export function HomePage() {
                 label="Loki datasource"
                 description="Optional — if not set, the first available Loki datasource is used"
               >
-                <Select
+                <Combobox
                   placeholder="Select a Loki datasource"
                   options={lokiDatasources}
                   value={lokiUid || null}
-                  onChange={(v: SelectableValue<string>) => setLokiUid(v?.value ?? '')}
+                  onChange={(v) => setLokiUid(v?.value ?? '')}
                   isClearable
                 />
               </Field>
@@ -133,11 +138,11 @@ export function HomePage() {
                 label="Tempo datasource"
                 description="Optional — enables the Traces page to open queries directly in Explore"
               >
-                <Select
+                <Combobox
                   placeholder="Select a Tempo datasource"
                   options={tempoDatasources}
                   value={tempoUid || null}
-                  onChange={(v: SelectableValue<string>) => setTempoUid(v?.value ?? '')}
+                  onChange={(v) => setTempoUid(v?.value ?? '')}
                   isClearable
                 />
               </Field>
@@ -169,8 +174,12 @@ const getStyles = (theme: GrafanaTheme2) => ({
     border: 1px solid ${theme.colors.border.weak};
 
     /* Make Field labels and inputs fill the card width */
-    & label { display: block; }
-    & input, & .select-container { width: 100% !important; }
+    & label {
+      display: block;
+    }
+    & input {
+      width: 100% !important;
+    }
 
     /* Style inline code blocks in field descriptions */
     & code {

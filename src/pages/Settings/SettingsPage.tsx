@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Button, Field, Input, Select, Stack, Text, useStyles2 } from '@grafana/ui';
-import { GrafanaTheme2, SelectableValue } from '@grafana/data';
+import { Button, Combobox, Field, Input, Stack, Text, useStyles2 } from '@grafana/ui';
+import { GrafanaTheme2 } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
 import { css } from '@emotion/css';
 import { usePluginMeta } from '../../utils/utils.plugin';
@@ -22,7 +22,12 @@ export function SettingsPage() {
   const [error, setError] = useState('');
 
   const isValidUrl = (val: string) => {
-    try { new URL(val); return true; } catch { return false; }
+    try {
+      new URL(val);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const save = async (updated: FaroApp[]) => {
@@ -73,12 +78,12 @@ export function SettingsPage() {
 
   const lokiField = (values: FaroApp, onChange: (v: FaroApp) => void) => (
     <Field label="Loki datasource" description="If not set, the first available Loki datasource is used">
-      <Select
+      <Combobox
         width={50}
         placeholder="Select a Loki datasource"
         options={lokiDatasources}
         value={values.lokiUid || null}
-        onChange={(v: SelectableValue<string>) => onChange({ ...values, lokiUid: v?.value ?? undefined })}
+        onChange={(v) => onChange({ ...values, lokiUid: v?.value ?? undefined })}
         isClearable
       />
     </Field>
@@ -86,12 +91,12 @@ export function SettingsPage() {
 
   const tempoField = (values: FaroApp, onChange: (v: FaroApp) => void) => (
     <Field label="Tempo datasource" description="Enables the Traces page to open queries in Explore">
-      <Select
+      <Combobox
         width={50}
         placeholder="Select a Tempo datasource"
         options={tempoDatasources}
         value={values.tempoUid || null}
-        onChange={(v: SelectableValue<string>) => onChange({ ...values, tempoUid: v?.value ?? undefined })}
+        onChange={(v) => onChange({ ...values, tempoUid: v?.value ?? undefined })}
         isClearable
       />
     </Field>
@@ -101,7 +106,9 @@ export function SettingsPage() {
     <div className={s.wrapper}>
       <Stack direction="column" gap={4}>
         <Stack direction="column" gap={1}>
-          <Text element="h1" variant="h2">Settings</Text>
+          <Text element="h1" variant="h2">
+            Settings
+          </Text>
           <Text color="secondary">Manage your monitored applications.</Text>
         </Stack>
 
@@ -145,7 +152,13 @@ export function SettingsPage() {
                     <Button onClick={handleEditSave} disabled={saving}>
                       {saving ? 'Saving...' : 'Save'}
                     </Button>
-                    <Button variant="secondary" onClick={() => { setEditIndex(null); setError(''); }}>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        setEditIndex(null);
+                        setError('');
+                      }}
+                    >
                       Cancel
                     </Button>
                   </Stack>
@@ -154,8 +167,12 @@ export function SettingsPage() {
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                   <Stack direction="column" gap={0}>
                     <Text variant="body">{app.name}</Text>
-                    <Text color="secondary" variant="bodySmall">{app.url}</Text>
-                    <Text color="secondary" variant="bodySmall">Service: {app.serviceName}</Text>
+                    <Text color="secondary" variant="bodySmall">
+                      {app.url}
+                    </Text>
+                    <Text color="secondary" variant="bodySmall">
+                      Service: {app.serviceName}
+                    </Text>
                     {app.lokiUid && (
                       <Text color="secondary" variant="bodySmall">
                         Loki: {lokiDatasources.find((t) => t.value === app.lokiUid)?.label ?? app.lokiUid}
@@ -171,7 +188,12 @@ export function SettingsPage() {
                     <Button
                       variant="secondary"
                       size="sm"
-                      onClick={() => { setEditIndex(i); setEditValues(app); setError(''); setAddingNew(false); }}
+                      onClick={() => {
+                        setEditIndex(i);
+                        setEditValues(app);
+                        setError('');
+                        setAddingNew(false);
+                      }}
                     >
                       Edit
                     </Button>
@@ -194,14 +216,16 @@ export function SettingsPage() {
                   width={50}
                   placeholder="https://myapp.com"
                   value={newValues.url}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setNewValues({ ...newValues, url: e.target.value })
-                  }
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNewValues({ ...newValues, url: e.target.value })}
                 />
               </Field>
               <Field
                 label="Service name"
-                description={<>Must match the <code>app.name</code> you set in Faro</>}
+                description={
+                  <>
+                    Must match the <code>app.name</code> you set in Faro
+                  </>
+                }
               >
                 <Input
                   width={50}
@@ -217,9 +241,7 @@ export function SettingsPage() {
                   width={50}
                   placeholder="My App"
                   value={newValues.name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setNewValues({ ...newValues, name: e.target.value })
-                  }
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setNewValues({ ...newValues, name: e.target.value })}
                 />
               </Field>
               {lokiField(newValues, setNewValues)}
@@ -228,7 +250,13 @@ export function SettingsPage() {
                 <Button onClick={handleAddSave} disabled={!newValues.url || !newValues.serviceName || saving}>
                   {saving ? 'Saving...' : 'Add app'}
                 </Button>
-                <Button variant="secondary" onClick={() => { setAddingNew(false); setError(''); }}>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setAddingNew(false);
+                    setError('');
+                  }}
+                >
                   Cancel
                 </Button>
               </Stack>

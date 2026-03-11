@@ -17,7 +17,6 @@ import {
 import { FaroApp } from '../../constants';
 
 export function errorsScene(apps: FaroApp[]) {
-
   const errorsOverTimeData = new SceneQueryRunner({
     datasource: FARO_DS_REF,
     queries: [
@@ -86,7 +85,9 @@ export function errorsScene(apps: FaroApp[]) {
           minHeight: 250,
           body: PanelBuilders.timeseries()
             .setTitle('Page Loads & Errors')
-            .setDescription('Total page loads (blue) with errors (red) stacked on top. The red portion shows how many loads had a JS error.')
+            .setDescription(
+              'Total page loads (blue) with errors (red) stacked on top. The red portion shows how many loads had a JS error.'
+            )
             .setData(errorsOverTimeData)
             .setUnit('short')
             .setCustomFieldConfig('drawStyle', GraphDrawStyle.Bars)
@@ -109,10 +110,7 @@ export function errorsScene(apps: FaroApp[]) {
                   .build(),
               }),
               new SceneFlexItem({
-                body: PanelBuilders.logs()
-                  .setTitle('Error log')
-                  .setData(errorLogsData)
-                  .build(),
+                body: PanelBuilders.logs().setTitle('Error log').setData(errorLogsData).build(),
               }),
             ],
           }),

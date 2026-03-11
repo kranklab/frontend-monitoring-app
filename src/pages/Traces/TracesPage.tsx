@@ -16,10 +16,7 @@ function buildExploreUrl(tempoUid: string, query: string): string {
 
 function ConfiguredTraces({ app }: { app: FaroApp }) {
   const s = useStyles2(getStyles);
-  const allTracesUrl = buildExploreUrl(
-    app.tempoUid!,
-    `{resource.service.name=~".*${app.serviceName}.*"}`
-  );
+  const allTracesUrl = buildExploreUrl(app.tempoUid!, `{resource.service.name=~".*${app.serviceName}.*"}`);
   const errorTracesUrl = buildExploreUrl(
     app.tempoUid!,
     `{resource.service.name=~".*${app.serviceName}.*" && status=error}`
@@ -29,10 +26,11 @@ function ConfiguredTraces({ app }: { app: FaroApp }) {
     <div className={s.wrapper}>
       <Stack direction="column" gap={4}>
         <Stack direction="column" gap={1}>
-          <Text element="h1" variant="h2">Traces</Text>
+          <Text element="h1" variant="h2">
+            Traces
+          </Text>
           <Text color="secondary">
-            Distributed traces for <strong>{app.name}</strong> — service name:{' '}
-            <code>{app.serviceName}</code>
+            Distributed traces for <strong>{app.name}</strong> — service name: <code>{app.serviceName}</code>
           </Text>
         </Stack>
 
@@ -75,9 +73,12 @@ function NoTempoConfigured() {
   return (
     <div className={s.wrapper}>
       <Stack direction="column" gap={2}>
-        <Text element="h1" variant="h2">Traces</Text>
+        <Text element="h1" variant="h2">
+          Traces
+        </Text>
         <Text color="secondary">
-          No Tempo datasource configured. Go to <strong>Settings</strong> and add a Tempo datasource to enable trace exploration.
+          No Tempo datasource configured. Go to <strong>Settings</strong> and add a Tempo datasource to enable trace
+          exploration.
         </Text>
       </Stack>
     </div>

@@ -16,7 +16,6 @@ import {
 import { FaroApp } from '../../constants';
 
 export function eventsScene(apps: FaroApp[]) {
-
   const eventsOverTimeData = new SceneQueryRunner({
     datasource: FARO_DS_REF,
     queries: [
@@ -83,7 +82,9 @@ export function eventsScene(apps: FaroApp[]) {
                 width: '65%',
                 body: PanelBuilders.timeseries()
                   .setTitle('Events over time')
-                  .setDescription('Event count over time broken down by event name. Shows which events are most frequent and when activity spikes occur.')
+                  .setDescription(
+                    'Event count over time broken down by event name. Shows which events are most frequent and when activity spikes occur.'
+                  )
                   .setData(eventsOverTimeData)
                   .setUnit('short')
                   .setCustomFieldConfig('fillOpacity', 10)
@@ -102,10 +103,7 @@ export function eventsScene(apps: FaroApp[]) {
         }),
         new SceneFlexItem({
           minHeight: 300,
-          body: PanelBuilders.logs()
-            .setTitle('Event log')
-            .setData(eventLogsData)
-            .build(),
+          body: PanelBuilders.logs().setTitle('Event log').setData(eventLogsData).build(),
         }),
       ],
     }),

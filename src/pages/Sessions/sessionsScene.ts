@@ -17,7 +17,6 @@ import {
 import { FaroApp } from '../../constants';
 
 export function sessionsScene(apps: FaroApp[]) {
-
   const sessionsOverviewData = new SceneQueryRunner({
     datasource: FARO_DS_REF,
     queries: [
@@ -86,7 +85,9 @@ export function sessionsScene(apps: FaroApp[]) {
           minHeight: 200,
           body: PanelBuilders.timeseries()
             .setTitle('Sessions overview')
-            .setDescription('Activity over time broken down by page URL. Each bar represents log activity from user sessions on that page.')
+            .setDescription(
+              'Activity over time broken down by page URL. Each bar represents log activity from user sessions on that page.'
+            )
             .setData(sessionsOverviewData)
             .setUnit('short')
             .setCustomFieldConfig('drawStyle', GraphDrawStyle.Bars)

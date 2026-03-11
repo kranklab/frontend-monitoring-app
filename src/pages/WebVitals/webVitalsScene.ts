@@ -1,10 +1,4 @@
-import {
-  EmbeddedScene,
-  PanelBuilders,
-  SceneFlexItem,
-  SceneFlexLayout,
-  SceneQueryRunner,
-} from '@grafana/scenes';
+import { EmbeddedScene, PanelBuilders, SceneFlexItem, SceneFlexLayout, SceneQueryRunner } from '@grafana/scenes';
 import { ThresholdsMode } from '@grafana/data';
 import {
   createFaroControls,
@@ -89,7 +83,6 @@ function vitalRow(
 }
 
 export function webVitalsScene(apps: FaroApp[]) {
-
   return new EmbeddedScene({
     $variables: createFaroVariableSet(apps),
     body: new SceneFlexLayout({

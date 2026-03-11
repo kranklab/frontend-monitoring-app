@@ -28,7 +28,6 @@ function vitalStatExpr(field: string) {
 }
 
 export function overviewScene(apps: FaroApp[]) {
-
   // ── Page performance table ──────────────────────────────────────────────
   // Multiple instant metric queries joined by page_url label.
   const pagePerformanceData = new SceneDataTransformer({
@@ -148,8 +147,14 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('JS Errors')
-                  .setDescription('Total number of JavaScript exceptions captured by the Faro SDK in the selected time range.')
-                  .setData(statQuery(`sum(count_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | kind = "exception" [$__range]))`))
+                  .setDescription(
+                    'Total number of JavaScript exceptions captured by the Faro SDK in the selected time range.'
+                  )
+                  .setData(
+                    statQuery(
+                      `sum(count_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | kind = "exception" [$__range]))`
+                    )
+                  )
                   .setUnit('short')
                   .setColor({ mode: 'thresholds' })
                   .setThresholds({
@@ -165,7 +170,9 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('TTFB')
-                  .setDescription('Time to First Byte — how long until the browser receives the first byte of the page response. Measures server and network latency. Good: <800ms, Needs improvement: <1800ms.')
+                  .setDescription(
+                    'Time to First Byte — how long until the browser receives the first byte of the page response. Measures server and network latency. Good: <800ms, Needs improvement: <1800ms.'
+                  )
                   .setData(statQuery(vitalStatExpr('time_to_first_byte')))
                   .setUnit('ms')
                   .setColor({ mode: 'thresholds' })
@@ -182,7 +189,9 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('FCP')
-                  .setDescription('First Contentful Paint — time until the browser renders the first piece of content (text, image, etc.). Good: <1800ms, Needs improvement: <3000ms.')
+                  .setDescription(
+                    'First Contentful Paint — time until the browser renders the first piece of content (text, image, etc.). Good: <1800ms, Needs improvement: <3000ms.'
+                  )
                   .setData(statQuery(vitalStatExpr('fcp')))
                   .setUnit('ms')
                   .setColor({ mode: 'thresholds' })
@@ -199,7 +208,9 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('LCP')
-                  .setDescription('Largest Contentful Paint — time until the largest visible element (hero image, heading, etc.) finishes rendering. Core Web Vital. Good: <2500ms, Needs improvement: <4000ms.')
+                  .setDescription(
+                    'Largest Contentful Paint — time until the largest visible element (hero image, heading, etc.) finishes rendering. Core Web Vital. Good: <2500ms, Needs improvement: <4000ms.'
+                  )
                   .setData(statQuery(vitalStatExpr('lcp')))
                   .setUnit('ms')
                   .setColor({ mode: 'thresholds' })
@@ -216,7 +227,9 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('CLS')
-                  .setDescription('Cumulative Layout Shift — measures visual stability. A low score means elements don\'t unexpectedly move during load. Core Web Vital. Good: <0.1, Needs improvement: <0.25.')
+                  .setDescription(
+                    "Cumulative Layout Shift — measures visual stability. A low score means elements don't unexpectedly move during load. Core Web Vital. Good: <0.1, Needs improvement: <0.25."
+                  )
                   .setData(statQuery(vitalStatExpr('cls')))
                   .setUnit('short')
                   .setColor({ mode: 'thresholds' })
@@ -233,7 +246,9 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('INP')
-                  .setDescription('Interaction to Next Paint — measures responsiveness to user interactions (clicks, taps, key presses). Replaces FID as a Core Web Vital. Good: <200ms, Needs improvement: <500ms.')
+                  .setDescription(
+                    'Interaction to Next Paint — measures responsiveness to user interactions (clicks, taps, key presses). Replaces FID as a Core Web Vital. Good: <200ms, Needs improvement: <500ms.'
+                  )
                   .setData(statQuery(vitalStatExpr('inp')))
                   .setUnit('ms')
                   .setColor({ mode: 'thresholds' })
@@ -250,8 +265,14 @@ export function overviewScene(apps: FaroApp[]) {
               new SceneFlexItem({
                 body: PanelBuilders.stat()
                   .setTitle('Sessions')
-                  .setDescription('Number of unique user sessions in the selected time range, identified by session ID assigned by the Faro SDK.')
-                  .setData(statQuery(`count(count by (session_id) (count_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | session_id != "" [$__range])))`))
+                  .setDescription(
+                    'Number of unique user sessions in the selected time range, identified by session ID assigned by the Faro SDK.'
+                  )
+                  .setData(
+                    statQuery(
+                      `count(count by (session_id) (count_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | session_id != "" [$__range])))`
+                    )
+                  )
                   .setUnit('short')
                   .setColor({ mode: 'fixed', fixedColor: 'blue' })
                   .build(),
@@ -265,7 +286,9 @@ export function overviewScene(apps: FaroApp[]) {
           minHeight: 200,
           body: PanelBuilders.table()
             .setTitle('Page Performance')
-            .setDescription('Average web vital scores and error count per page URL over the selected time range. Use this to identify which pages have the worst performance.')
+            .setDescription(
+              'Average web vital scores and error count per page URL over the selected time range. Use this to identify which pages have the worst performance.'
+            )
             .setData(pagePerformanceData)
             .build(),
         }),
@@ -280,7 +303,9 @@ export function overviewScene(apps: FaroApp[]) {
                 width: '50%',
                 body: PanelBuilders.timeseries()
                   .setTitle('Errors over time')
-                  .setDescription('JavaScript exception count over time, broken down by page URL. Spikes indicate increased error rates on specific pages.')
+                  .setDescription(
+                    'JavaScript exception count over time, broken down by page URL. Spikes indicate increased error rates on specific pages.'
+                  )
                   .setData(errorsOverTimeData)
                   .setUnit('short')
                   .setCustomFieldConfig('fillOpacity', 10)
@@ -290,7 +315,9 @@ export function overviewScene(apps: FaroApp[]) {
                 width: '50%',
                 body: PanelBuilders.timeseries()
                   .setTitle('LCP over time')
-                  .setDescription('Largest Contentful Paint trend over time. Rising values indicate degrading load performance — investigate backend latency, asset size, or CDN issues.')
+                  .setDescription(
+                    'Largest Contentful Paint trend over time. Rising values indicate degrading load performance — investigate backend latency, asset size, or CDN issues.'
+                  )
                   .setData(lcpOverTimeData)
                   .setUnit('ms')
                   .setCustomFieldConfig('fillOpacity', 10)

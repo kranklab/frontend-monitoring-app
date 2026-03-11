@@ -10,11 +10,7 @@ function useDatasourcesByType(type: string): DatasourceOption[] {
     getBackendSrv()
       .get('/api/datasources')
       .then((datasources: Array<{ uid: string; name: string; type: string }>) => {
-        setOptions(
-          datasources
-            .filter((ds) => ds.type === type)
-            .map((ds) => ({ label: ds.name, value: ds.uid }))
-        );
+        setOptions(datasources.filter((ds) => ds.type === type).map((ds) => ({ label: ds.name, value: ds.uid })));
       })
       .catch(() => {});
   }, [type]);
