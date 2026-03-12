@@ -3,6 +3,7 @@ import { Button, Stack, Text, useStyles2 } from '@grafana/ui';
 import { GrafanaTheme2 } from '@grafana/data';
 import { css } from '@emotion/css';
 import { usePluginMeta } from '../../utils/utils.plugin';
+import { useAppSelection } from '../../utils/utils.appSelection';
 import { AppJsonData, FaroApp } from '../../constants';
 
 function buildExploreUrl(tempoUid: string, query: string): string {
@@ -77,8 +78,8 @@ function NoTempoConfigured() {
           Traces
         </Text>
         <Text color="secondary">
-          No Tempo datasource configured. Go to <strong>Settings</strong> and add a Tempo datasource to enable trace
-          exploration.
+          No Tempo datasource configured. Go to <strong>Frontend Monitoring</strong> and edit the app to add a Tempo
+          datasource.
         </Text>
       </Stack>
     </div>
@@ -87,8 +88,9 @@ function NoTempoConfigured() {
 
 export function TracesPage() {
   const meta = usePluginMeta();
+  const { selectedIndex } = useAppSelection();
   const apps = (meta?.jsonData as AppJsonData)?.apps ?? [];
-  const app = apps[0];
+  const app = apps[selectedIndex];
 
   if (!app?.tempoUid) {
     return <NoTempoConfigured />;

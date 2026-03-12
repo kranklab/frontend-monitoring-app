@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Combobox, Field, Input, Stack, Text, useStyles2 } from '@grafana/ui';
 import { GrafanaTheme2 } from '@grafana/data';
-import { getBackendSrv } from '@grafana/runtime';
+import { getBackendSrv, locationService } from '@grafana/runtime';
 import { css } from '@emotion/css';
 import { usePluginMeta } from '../../utils/utils.plugin';
+import { useAppSelection } from '../../utils/utils.appSelection';
 import { useLokiDatasources, useTempoDatasources } from '../../utils/utils.datasources';
-import { AppJsonData, FaroApp } from '../../constants';
+import { AppJsonData, FaroApp, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 
 export function SettingsPage() {
   const meta = usePluginMeta();
@@ -13,6 +14,7 @@ export function SettingsPage() {
   const lokiDatasources = useLokiDatasources();
   const tempoDatasources = useTempoDatasources();
   const apps: FaroApp[] = (meta?.jsonData as AppJsonData)?.apps ?? [];
+  const { selectedIndex, selectApp } = useAppSelection();
 
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [editValues, setEditValues] = useState<FaroApp>({ name: '', url: '', serviceName: '' });
@@ -45,6 +47,11 @@ export function SettingsPage() {
       setError('Failed to save. Please try again.');
       setSaving(false);
     }
+  };
+
+  const handleSelect = (index: number) => {
+    selectApp(index);
+    locationService.push(`${PLUGIN_BASE_URL}/${ROUTES.Overview}`);
   };
 
   const handleRemove = (index: number) => {
@@ -107,16 +114,16 @@ export function SettingsPage() {
       <Stack direction="column" gap={4}>
         <Stack direction="column" gap={1}>
           <Text element="h1" variant="h2">
-            Settings
+            Frontend Monitoring
           </Text>
-          <Text color="secondary">Manage your monitored applications.</Text>
+          <Text color="secondary">Select an app to monitor, or manage your configured applications.</Text>
         </Stack>
 
         {error && <Text color="error">{error}</Text>}
 
         <Stack direction="column" gap={2}>
           {apps.map((app, i) => (
-            <div key={i} className={s.appRow}>
+            <div key={i} className={`${s.appRow} ${i === selectedIndex ? s.appRowActive : ''}`}>
               {editIndex === i ? (
                 <Stack direction="column" gap={2}>
                   <Field label="App URL" invalid={Boolean(error && !editValues.url)} error={error}>
@@ -166,7 +173,10 @@ export function SettingsPage() {
               ) : (
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                   <Stack direction="column" gap={0}>
-                    <Text variant="body">{app.name}</Text>
+                    <Stack direction="row" gap={1} alignItems="center">
+                      <Text variant="body">{app.name}</Text>
+                      {i === selectedIndex && <span className={s.activeBadge}>active</span>}
+                    </Stack>
                     <Text color="secondary" variant="bodySmall">
                       {app.url}
                     </Text>
@@ -185,6 +195,11 @@ export function SettingsPage() {
                     )}
                   </Stack>
                   <Stack direction="row" gap={1}>
+                    {i !== selectedIndex && (
+                      <Button variant="primary" size="sm" onClick={() => handleSelect(i)}>
+                        Select
+                      </Button>
+                    )}
                     <Button
                       variant="secondary"
                       size="sm"
@@ -293,5 +308,15 @@ const getStyles = (theme: GrafanaTheme2) => ({
     background: ${theme.colors.background.secondary};
     border: 1px solid ${theme.colors.border.weak};
     border-radius: ${theme.shape.radius.default};
+  `,
+  appRowActive: css`
+    border-color: ${theme.colors.primary.border};
+  `,
+  activeBadge: css`
+    font-size: ${theme.typography.bodySmall.fontSize};
+    color: ${theme.colors.primary.text};
+    background: ${theme.colors.primary.transparent};
+    padding: ${theme.spacing(0, 0.75)};
+    border-radius: ${theme.shape.radius.pill};
   `,
 });

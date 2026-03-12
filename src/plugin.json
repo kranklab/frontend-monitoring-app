@@ -23,7 +23,7 @@
       "name": "Overview",
       "path": "/a/%PLUGIN_ID%/overview",
       "addToNav": true,
-      "defaultNav": true
+      "defaultNav": false
     },
     {
       "type": "page",
@@ -62,10 +62,10 @@
     },
     {
       "type": "page",
-      "name": "Settings",
+      "name": "Frontend Monitoring",
       "path": "/a/%PLUGIN_ID%/settings",
       "addToNav": true,
-      "defaultNav": false
+      "defaultNav": true
     }
   ],
   "dependencies": {

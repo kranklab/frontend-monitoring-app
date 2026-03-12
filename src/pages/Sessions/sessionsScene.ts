@@ -16,7 +16,7 @@ import {
 } from '../../utils/utils.faro';
 import { FaroApp } from '../../constants';
 
-export function sessionsScene(apps: FaroApp[]) {
+export function sessionsScene(app: FaroApp) {
   const sessionsOverviewData = new SceneQueryRunner({
     datasource: FARO_DS_REF,
     queries: [
@@ -77,7 +77,7 @@ export function sessionsScene(apps: FaroApp[]) {
   });
 
   return new EmbeddedScene({
-    $variables: createFaroVariableSet(apps),
+    $variables: createFaroVariableSet(app),
     body: new SceneFlexLayout({
       direction: 'column',
       children: [

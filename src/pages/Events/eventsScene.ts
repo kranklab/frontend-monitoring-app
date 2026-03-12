@@ -15,7 +15,7 @@ import {
 } from '../../utils/utils.faro';
 import { FaroApp } from '../../constants';
 
-export function eventsScene(apps: FaroApp[]) {
+export function eventsScene(app: FaroApp) {
   const eventsOverTimeData = new SceneQueryRunner({
     datasource: FARO_DS_REF,
     queries: [
@@ -69,7 +69,7 @@ export function eventsScene(apps: FaroApp[]) {
   });
 
   return new EmbeddedScene({
-    $variables: createFaroVariableSet(apps),
+    $variables: createFaroVariableSet(app),
     body: new SceneFlexLayout({
       direction: 'column',
       children: [

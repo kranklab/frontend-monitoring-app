@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SceneApp, SceneTimeRange, useSceneApp } from '@grafana/scenes';
 import { AppRootProps } from '@grafana/data';
 import { PluginPropsContext } from '../../utils/utils.plugin';
+import { AppSelectionContext } from '../../utils/utils.appSelection';
 import { createOverviewPage } from '../../pages/Overview/overviewPage';
 import { createSessionsPage } from '../../pages/Sessions/sessionsPage';
 import { createSettingsPage } from '../../pages/Settings/settingsPage';
@@ -12,15 +13,15 @@ import { createEventsPage } from '../../pages/Events/eventsPage';
 import { HomePage } from '../../pages/Home/HomePage';
 import { AppJsonData, FaroApp } from '../../constants';
 
-function getSceneApp(apps: FaroApp[]) {
+function getSceneApp(app: FaroApp) {
   return new SceneApp({
     $timeRange: new SceneTimeRange({ from: 'now-1h', to: 'now' }),
     pages: [
-      createOverviewPage(apps),
-      createWebVitalsPage(apps),
-      createErrorsPage(apps),
-      createEventsPage(apps),
-      createSessionsPage(apps),
+      createOverviewPage(app),
+      createWebVitalsPage(app),
+      createErrorsPage(app),
+      createEventsPage(app),
+      createSessionsPage(app),
       createTracesPage(),
       createSettingsPage(),
     ],
@@ -31,17 +32,30 @@ function getSceneApp(apps: FaroApp[]) {
   });
 }
 
-function AppWithScenes({ apps }: { apps: FaroApp[] }) {
-  const scene = useSceneApp(() => getSceneApp(apps));
+function AppWithScenes({ app }: { app: FaroApp }) {
+  const scene = useSceneApp(() => getSceneApp(app));
   return <scene.Component model={scene} />;
 }
 
 function App(props: AppRootProps) {
   const apps = (props.meta.jsonData as AppJsonData)?.apps ?? [];
 
+  const [selectedIndex, setSelectedIndex] = useState(() => {
+    const stored = localStorage.getItem('faro-selected-app');
+    const idx = stored ? parseInt(stored, 10) : 0;
+    return Math.max(0, Math.min(idx, apps.length - 1));
+  });
+
+  const selectApp = (index: number) => {
+    localStorage.setItem('faro-selected-app', String(index));
+    setSelectedIndex(index);
+  };
+
   return (
     <PluginPropsContext.Provider value={props}>
-      {apps.length > 0 ? <AppWithScenes apps={apps} /> : <HomePage />}
+      <AppSelectionContext.Provider value={{ selectedIndex, selectApp }}>
+        {apps.length > 0 ? <AppWithScenes key={selectedIndex} app={apps[selectedIndex]} /> : <HomePage />}
+      </AppSelectionContext.Provider>
     </PluginPropsContext.Provider>
   );
 }

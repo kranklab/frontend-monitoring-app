@@ -86,9 +86,9 @@ function vitalRow(
   });
 }
 
-export function webVitalsScene(apps: FaroApp[]) {
+export function webVitalsScene(app: FaroApp) {
   return new EmbeddedScene({
-    $variables: createFaroVariableSet(apps),
+    $variables: createFaroVariableSet(app),
     body: new SceneFlexLayout({
       direction: 'column',
       children: [

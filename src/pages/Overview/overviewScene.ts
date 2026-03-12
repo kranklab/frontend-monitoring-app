@@ -27,7 +27,7 @@ function vitalStatExpr(field: string) {
   return `avg(avg_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | kind = "measurement" | ${field} != "" | unwrap ${field} [$__range]))`;
 }
 
-export function overviewScene(apps: FaroApp[]) {
+export function overviewScene(app: FaroApp) {
   // ── Page performance table ──────────────────────────────────────────────
   // Multiple instant metric queries joined by page_url label.
   const pagePerformanceData = new SceneDataTransformer({
@@ -134,7 +134,7 @@ export function overviewScene(apps: FaroApp[]) {
   });
 
   return new EmbeddedScene({
-    $variables: createFaroVariableSet(apps),
+    $variables: createFaroVariableSet(app),
     body: new SceneFlexLayout({
       direction: 'column',
       children: [

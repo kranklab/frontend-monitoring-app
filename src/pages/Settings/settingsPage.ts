@@ -5,7 +5,7 @@ import { SettingsPage } from './SettingsPage';
 
 export function createSettingsPage() {
   return new SceneAppPage({
-    title: 'Settings',
+    title: 'Frontend Monitoring',
     url: prefixRoute(ROUTES.Settings),
     routePath: ROUTES.Settings,
     getScene: () =>
