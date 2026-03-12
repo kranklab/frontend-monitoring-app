@@ -92,7 +92,7 @@ export function webVitalsScene(apps: FaroApp[]) {
         vitalRow('FCP (First Contentful Paint)', 'fcp', 'ms', 1800, 3000),
         vitalRow('CLS (Cumulative Layout Shift)', 'cls', 'short', 0.1, 0.25),
         vitalRow('INP (Interaction to Next Paint)', 'inp', 'ms', 200, 500),
-        vitalRow('TTFB (Time to First Byte)', 'time_to_first_byte', 'ms', 800, 1800),
+        vitalRow('TTFB (Time to First Byte)', 'ttfb', 'ms', 800, 1800),
       ],
     }),
     controls: createFaroControls(),

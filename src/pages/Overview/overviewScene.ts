@@ -42,7 +42,7 @@ export function overviewScene(apps: FaroApp[]) {
         },
         {
           refId: 'TTFB',
-          expr: `avg by (page_url) (avg_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | kind = "measurement" | time_to_first_byte != "" | unwrap time_to_first_byte [$__range]))`,
+          expr: `avg by (page_url) (avg_over_time(${FARO_STREAM} | logfmt ${FARO_URL_FILTER} | kind = "measurement" | ttfb != "" | unwrap ttfb [$__range]))`,
           instant: true,
           range: false,
         },
@@ -173,7 +173,7 @@ export function overviewScene(apps: FaroApp[]) {
                   .setDescription(
                     'Time to First Byte — how long until the browser receives the first byte of the page response. Measures server and network latency. Good: <800ms, Needs improvement: <1800ms.'
                   )
-                  .setData(statQuery(vitalStatExpr('time_to_first_byte')))
+                  .setData(statQuery(vitalStatExpr('ttfb')))
                   .setUnit('ms')
                   .setColor({ mode: 'thresholds' })
                   .setThresholds({
