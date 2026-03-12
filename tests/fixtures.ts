@@ -4,6 +4,7 @@ import pluginJson from '../src/plugin.json';
 type AppTestFixture = {
   appConfigPage: AppConfigPage;
   gotoPage: (path?: string) => Promise<AppPage>;
+  clearPluginApps: () => Promise<void>;
 };
 
 export const test = base.extend<AppTestFixture>({
@@ -20,6 +21,17 @@ export const test = base.extend<AppTestFixture>({
         pluginId: pluginJson.id,
       })
     );
+  },
+  clearPluginApps: async ({ request }, use) => {
+    await use(async () => {
+      await request.post(`/api/plugins/${pluginJson.id}/settings`, {
+        data: {
+          enabled: true,
+          pinned: true,
+          jsonData: { apps: [] },
+        },
+      });
+    });
   },
 });
 

@@ -1,6 +1,10 @@
 import { test, expect } from './fixtures';
 
 test.describe('navigating app', () => {
+  test.beforeEach(async ({ clearPluginApps }) => {
+    await clearPluginApps();
+  });
+
   test('app root should render successfully', async ({ gotoPage, page }) => {
     await gotoPage('');
     await expect(page.getByText('Frontend Monitoring')).toBeVisible();

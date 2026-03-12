@@ -1,5 +1,9 @@
 import { test, expect } from './fixtures';
 
+test.beforeEach(async ({ clearPluginApps }) => {
+  await clearPluginApps();
+});
+
 test('app configuration page should render', async ({ appConfigPage: _appConfigPage, page }) => {
   await expect(page.getByText('Monitored apps')).toBeVisible();
 });
